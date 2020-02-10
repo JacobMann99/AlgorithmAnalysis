@@ -1,1 +1,79 @@
+Today we'll be covering how to helpfully analyze an algorithm. Let's discuss what this means before hopping into it.
 
+As algorithms are a series of steps one must take to find a result from an input, many processes can be achieved through many different-but-similar algorithms.  Determining simpy "which is better" is a difficult, if not impossible, task to undertake because broad definitions of "better" yield unhelpfully vague answers, and narrow definitions of "better" yield with an exact count of the number of lines of code that execute during an algorithm, which is unhelpfully specific.  So, what is the best way to analyze an algorithm's effectiveness?
+
+Most people worry about space complexity and time complexity when analyzing processes.  Space complexity measures how much memory a process takes during its runtime, and time complexity measures how much time a process's runtime takes.  In our modern world of computing, memory is cheap, so space complexity is far less useful than time complexity.  This is the measure of "better" that we will use to analyze algorithms - "better" means faster.
+
+Lets analyze the following algorithm for its time complexity.  This process can be done on any algorithm or set of algorithms so they may be compared to which is best for which cases.
+
+ALGORITHM FindSumOfAllOddNumbers(A):
+  // algorithm finds the sum of all odd numbers in a given array
+  // input: A is an array of integers
+  // output: an integer representing the sum of all odd numbers in array A
+  let sum = 0
+  for i<-0;i<|A|;i++;
+    if A[i] % 2 == 1:
+      sum = sum + A[i]
+    end
+  end
+  return sum
+  
+The above algorithm looks at a set of odd numbers, finds the odd ones, and adds them into a sum, which it returns at the end.  It isn't too complex of an algorithm, so it's a good place to start.
+
+Step 1: Decide on an input size
+
+In this step, you figure out what number represents the size of the input.  In many cases in which an algorithm iterates, it is a variable based off whatever input is put into the algorithm.  In the case above, the best size metric is the length of the array.  In other algorithms, it may be something like the length of a string, or a constant value, or the number of items in a graph or map.  This step is fairly easy, but crucial to the later steps.
+
+Our input size is |A| (the length of our input array).
+
+Step 2: Identify the algorithm's basic operation
+
+In this step, you must read through your algorithm to determine what basic operation will take most of the runtime.  In simple algorithms like the one above, there is a single basic operation, and it is found within the innermost loop.  In more complex algorithms, there may be multiple basic operations that are found within the innermost loop, or other operations not found within the innermost loop will take more runtime and are more important to the algorithm.
+
+In our case, our basic operation is a comparison, as it is the line that is run every iteration through the loop.  You may ask why the operation is an addition, as that is found nested even further than our comparision.  However, you must think about different cases of arrays.
+
+In the example input array of [0, 2, 4, 6, 8, 10], there is not a single odd number, so no additions will performed.  In the example input array of [1, 3, 5, 7, 9, 11], an addition will be performed every loop iteration.  This is not a constant based on our input size, so we do not use addition as our basic operation.  Instead, a comparision is used every iteration no matter the input, and it is always performed the same number of times as our input size.
+
+Our basic operation is the comparision:
+    if A[i] % 2 == 1
+    
+Step 3: Check whether number of times basic operation is executed is dependent on size of an input
+
+Now, this step seems to be covered by our previous analysis of the basic operation, but not all algorithms or cases are that simple.  For example, if our algorithm looked to be the same but the basic operation was far more complex on our system, then it might be necessary to use an inconsistent basic operation.  In this case, worst, average, and best case time complexities will need to be calculated separately.
+
+What does that look like with our algorithm?  Let's pretend that we instead decided to use the addition as our basic operation.  In this case, our best case scenario would be an input with no odd numbers.  Our worst case would be an input where every element was an odd number, and our average case would be a random assortment of numbers where odds and evens are half and half.  These are three different time complexities that our algorithm is too simple to warrant calculating.
+
+Our basic operation is solely dependent on the size of the input, not warranting different case investigations.
+
+Step 4: Set up a sum expressing the number of times the algorithm's basic operation is executed
+
+In this step, we will mathematically model our basic operation in our algorithm.  Every algorithm will have to be analyzed independently, and this step will need to be calculated up to three times if the basic operation usage is not dependent solely on the size of the input.
+
+Algorithms are best defined in this step as a summation.  In our algorithm, the basic operation is performed once per loop iteration, so our summation will look something like the following (though lacking a proper capital sigma because of the technology limitations):
+
+n = |A|
+i = 1
+
+sum from i to n of 1
+
+If you write out the summation in long hand form, it looks like this:
+
+1 + 1 + 1 + ... + 1 (with n 1's)
+
+Step 5: Using rules of sum manipulation, find a closed form formula or establish the order of growth
+
+This step is another mathematical step.  Utilizing the summation from the previous step, there are mathematical formulas to turn summations into standard expressions.  These can easily be found through online resources, so I won't cover all of them here.
+
+In our algorithm, the formula is a piece of cake.
+
+sum from i to n of 1 = n iterations
+
+This wasn't too bad.  A simple algorithm makes most of the steps of this guide seem trivial, but in complex algorithms, each step may take quite a bit of work to figure out.  Additionally, some algorithms may have a nasty enough summation in step 4 that finding a closed form formula is impossible or near impossible.  In this case, one should try to find simply the order of growth of the function.
+
+Order of growth is basically the highest modification of n in a formula that shows n changing over time.
+
+For example, the order of growth of 7n^4 + 3n^(3/2) - 4n - 12 is simply n^4.  It is the value that shows n changing the most, and is the most important term when n gets arbitrarily large.
+
+In some cases, finding a full formula from the summation can't happen, but finding an order of growth is much simpler in comparison.  Ultimately, order of growth matters much more than the full formula.  If two algorithms can complete the same thing, but one algorithm takes 10% longer, it isn't that big of a deal.  However, if one algorithm has a time complexity of n^2 and the other has a time complexity of n^3, the difference in time that the algorithms take to execute as the input size gets arbitrarily large is incredible.  For example, when n = 10000, n^2 = 100000000 and n^3 = 1000000000000.  If each operation takes 4 picoseconds, the n^2 algorithm takes 0.0004 seconds, and the n^3 algorithm takes 4 seconds.  This is a huge difference.
+
+I hope that the guide above has been helpful and informational.  Ultimately, it is important to analyze algorithms, and the steps to do so are generally quite simple (besides the potential for some complex mathematics).
