@@ -1,4 +1,4 @@
-Today we'll be covering how to helpfully analyze an algorithm. Let's discuss what this means before hopping into it.
+Today we'll be covering how to helpfully analyze an iterative algorithm. Let's discuss what this means before hopping into it.
 
 As algorithms are a series of steps one must take to find a result from an input, many processes can be achieved through many different-but-similar algorithms.  Determining simpy "which is better" is a difficult, if not impossible, task to undertake because broad definitions of "better" yield unhelpfully vague answers, and narrow definitions of "better" yield with an exact count of the number of lines of code that execute during an algorithm, which is unhelpfully specific.  So, what is the best way to analyze an algorithm's effectiveness?
 
